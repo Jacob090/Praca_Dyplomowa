@@ -14,40 +14,6 @@ Kompletny, działający projekt do pracy dyplomowej: autonomiczne sterowanie 4�
 - **Deterministyczne seedy**: `reset(seed)` używa `gymnasium.utils.seeding`.
 - **Stabilność**: akcje są clipowane, a prędkości stawów ograniczane.
 
-## Struktura repozytorium
-
-```
-autonomous-robotic-arm-rl/
-├── assets/
-│   ├── arm4dof/
-│   │   └── arm4dof.xml
-│   └── scene.xml
-├── envs/
-│   ├── __init__.py
-│   └── arm4dof_pick_place_env.py
-├── training/
-│   ├── __init__.py
-│   ├── train_stage1_reach.py
-│   ├── train_stage2_grasp.py
-│   └── train_stage3_place.py
-├── evaluation/
-│   ├── __init__.py
-│   └── evaluate_policy.py
-├── utils/
-│   ├── __init__.py
-│   ├── rewards.py
-│   ├── observations.py
-│   ├── metrics.py
-│   └── wrappers.py
-├── configs/
-│   ├── env.yaml
-│   ├── sac_stage1.yaml
-│   ├── sac_stage2.yaml
-│   └── sac_stage3.yaml
-├── test_env.py
-├── requirements.txt
-└── README.md
-```
 
 ## Instalacja
 
@@ -65,7 +31,7 @@ python test_env.py --stage reach --steps 200 --render
 
 ## Trening SAC z curriculum learning
 
-### Stage 1 – Reach
+### Stage 1 – Reach (do dopracowania przechodzenie wątków!!)
 ```
 python training/train_stage1_reach.py
 ```
@@ -75,7 +41,7 @@ python training/train_stage1_reach.py
 python training/train_stage2_grasp.py
 ```
 
-### Stage 3 – Place (ładuje wagi z Stage 2)
+### Stage 3 – Place (ładuje wagi z Stage 2) (nie uruchamiać)
 ```
 python training/train_stage3_place.py
 ```
