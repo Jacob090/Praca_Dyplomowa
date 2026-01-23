@@ -80,26 +80,26 @@
 		<material class="ur5e" name="linkgray" rgba="0.82 0.82 0.82 1"/>
 		<material class="ur5e" name="urblue" rgba="0.49 0.678 0.8 1"/>
 
-		<mesh file="ur5e/base_0.obj"/>
-		<mesh file="ur5e/base_1.obj"/>
-		<mesh file="ur5e/shoulder_0.obj"/>
-		<mesh file="ur5e/shoulder_1.obj"/>
-		<mesh file="ur5e/shoulder_2.obj"/>
-		<mesh file="ur5e/upperarm_0.obj"/>
-		<mesh file="ur5e/upperarm_1.obj"/>
-		<mesh file="ur5e/upperarm_2.obj"/>
-		<mesh file="ur5e/upperarm_3.obj"/>
-		<mesh file="ur5e/forearm_0.obj"/>
-		<mesh file="ur5e/forearm_1.obj"/>
-		<mesh file="ur5e/forearm_2.obj"/>
-		<mesh file="ur5e/forearm_3.obj"/>
-		<mesh file="ur5e/wrist1_0.obj"/>
-		<mesh file="ur5e/wrist1_1.obj"/>
-		<mesh file="ur5e/wrist1_2.obj"/>
-		<mesh file="ur5e/wrist2_0.obj"/>
-		<mesh file="ur5e/wrist2_1.obj"/>
-		<mesh file="ur5e/wrist2_2.obj"/>
-		<mesh file="ur5e/wrist3.obj"/>
+		<mesh file="base_0.obj"/>
+		<mesh file="base_1.obj"/>
+		<mesh file="shoulder_0.obj"/>
+		<mesh file="shoulder_1.obj"/>
+		<mesh file="shoulder_2.obj"/>
+		<mesh file="upperarm_0.obj"/>
+		<mesh file="upperarm_1.obj"/>
+		<mesh file="upperarm_2.obj"/>
+		<mesh file="upperarm_3.obj"/>
+		<mesh file="forearm_0.obj"/>
+		<mesh file="forearm_1.obj"/>
+		<mesh file="forearm_2.obj"/>
+		<mesh file="forearm_3.obj"/>
+		<mesh file="wrist1_0.obj"/>
+		<mesh file="wrist1_1.obj"/>
+		<mesh file="wrist1_2.obj"/>
+		<mesh file="wrist2_0.obj"/>
+		<mesh file="wrist2_1.obj"/>
+		<mesh file="wrist2_2.obj"/>
+		<mesh file="wrist3.obj"/>
 
 		<!-- ===== Robotiq assets (2f85.xml) ===== -->
 		<material name="metal" rgba="0.58 0.58 0.58 1"/>
@@ -107,14 +107,14 @@
 		<material name="gray" rgba="0.4627 0.4627 0.4627 1"/>
 		<material name="black_2f85" rgba="0.149 0.149 0.149 1"/>
 
-		<mesh class="2f85" file="robotiq_2f85/base_mount.stl"/>
-		<mesh class="2f85" file="robotiq_2f85/base.stl"/>
-		<mesh class="2f85" file="robotiq_2f85/driver.stl"/>
-		<mesh class="2f85" file="robotiq_2f85/coupler.stl"/>
-		<mesh class="2f85" file="robotiq_2f85/follower.stl"/>
-		<mesh class="2f85" file="robotiq_2f85/pad.stl"/>
-		<mesh class="2f85" file="robotiq_2f85/silicone_pad.stl"/>
-		<mesh class="2f85" file="robotiq_2f85/spring_link.stl"/>
+		<mesh class="2f85" file="base_mount.stl"/>
+		<mesh class="2f85" file="base.stl"/>
+		<mesh class="2f85" file="driver.stl"/>
+		<mesh class="2f85" file="coupler.stl"/>
+		<mesh class="2f85" file="follower.stl"/>
+		<mesh class="2f85" file="pad.stl"/>
+		<mesh class="2f85" file="silicone_pad.stl"/>
+		<mesh class="2f85" file="spring_link.stl"/>
 	</asset>
 
 	<worldbody>

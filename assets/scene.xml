@@ -1,6 +1,6 @@
 <mujoco model="ur5e_scene">
 	<!-- Wczytanie robota z chwytakiem -->
-	<include file="UR5e+2F85.xml" keyframe="home"/>
+	<include file="arm_files/UR5e+2F85.xml" keyframe="home"/>
 
 	<statistic center="0.3 0 0.4" extent="0.8"/>
 
