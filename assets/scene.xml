@@ -1,31 +1,66 @@
-<mujoco model="arm4dof_scene">
-  <compiler angle="degree" coordinate="local"/>
-  <option timestep="0.02" gravity="0 0 -9.81" integrator="RK4"/>
-  <size njmax="2000" nconmax="200"/>
-  <visual>
-    <global offwidth="640" offheight="480"/>
-  </visual>
+<mujoco model="ur5e_scene">
+	<!-- Wczytanie robota z chwytakiem -->
+	<include file="UR5e+2F85.xml" keyframe="home"/>
 
-  <asset>
-    <texture name="grid" type="2d" builtin="checker" rgb1="0.2 0.2 0.2" rgb2="0.3 0.3 0.3" width="512" height="512"/>
-    <material name="grid_mat" texture="grid" texrepeat="4 4" texuniform="true"/>
-  </asset>
+	<statistic center="0.3 0 0.4" extent="0.8"/>
 
-  <include file="arm4dof/arm4dof.xml"/>
+	<visual>
+		<headlight diffuse="0.6 0.6 0.6" ambient="0.1 0.1 0.1" specular="0 0 0"/>
+		<rgba haze="0.15 0.25 0.35 1"/>
+		<global azimuth="120" elevation="-20"/>
+	</visual>
 
-  <worldbody>
-    <geom name="floor" type="plane" size="1 1 0.1" material="grid_mat" rgba="0.4 0.4 0.4 1"/>
+	<asset>
+		<!-- Background + podłoga -->
+		<texture type="skybox" builtin="gradient"
+				 rgb1="0.3 0.5 0.7" rgb2="0 0 0"
+				 width="512" height="3072"/>
 
-    <geom name="table" type="box" pos="0.25 0 0.02" size="0.3 0.3 0.02" rgba="0.6 0.5 0.4 1"/>
+		<texture type="2d" name="groundplane" builtin="checker" mark="edge"
+				 rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3"
+				 markrgb="0.8 0.8 0.8" width="300" height="300"/>
 
-    <body name="object" pos="0.2 0 0.04">
-      <freejoint name="object_free"/>
-      <geom name="object_geom" type="box" size="0.02 0.02 0.02" rgba="0.8 0.2 0.2 1"/>
-    </body>
+		<material name="groundplane" texture="groundplane"
+				  texuniform="true" texrepeat="5 5" reflectance="0.2"/>
 
-    <site name="goal" pos="0.35 0.15 0.04" size="0.03" rgba="0.2 0.8 0.2 0.6"/>
+		<!-- Materiały pomocnicze -->
+		<material name="table_gray" rgba="0.6 0.6 0.6 1"/>
+		<material name="block_red" rgba="0.8 0.1 0.1 1"/>
+		<material name="target_green" rgba="0.1 0.8 0.1 0.5"/>
+	</asset>
 
-    <light name="key" pos="1 1 2" dir="-1 -1 -2" diffuse="0.8 0.8 0.8" specular="0.2 0.2 0.2"/>
-    <camera name="main" pos="0.8 -0.8 0.6" xyaxes="0.7 0.7 0  -0.3 0.3 0.9"/>
-  </worldbody>
+	<worldbody>
+		<!-- Światło i podłoga -->
+		<light pos="0 0 1.5" dir="0 0 -1" directional="true"/>
+		<geom name="floor" type="plane" size="0 0 0.05" material="groundplane"/>
+
+		<!-- ========= POLE ROBOCZE ========= -->
+		<body name="table" pos="0 0.2 0">
+			<geom name="table_top" type="box"
+				  size="0.5 0.5 0.02"
+				  material="table_gray"
+				  contype="1" conaffinity="1"
+				  friction="1 0.005 0.0001"/>
+		</body>
+
+		<!-- ========= OBIEKT DO PRZENIESIENIA ========= -->
+		<body name="block" pos="0.2 0.4 0.04">
+			<freejoint/>
+			<geom name="block_geom" type="box"
+				  size="0.02 0.02 0.02"
+				  material="block_red"
+				  mass="0.2"
+				  contype="1" conaffinity="1"
+				  friction="1 0.005 0.0001"/>
+		</body>
+
+		<!-- ========= TARGET ZONE ========= -->
+		<body name="target_zone" pos="-0.2 0.40 0.02">
+			<geom name="target_pad" type="box"
+				  size="0.10 0.10 0.005"
+				  material="target_green"
+				  contype="0" conaffinity="0"
+				  friction="1 0.005 0.0001"/>
+		</body>
+	</worldbody>
 </mujoco>
