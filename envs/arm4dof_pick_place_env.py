@@ -1,4 +1,5 @@
 from __future__ import annotations
+from pathlib import Path
 
 from typing import Any, Dict, Optional, Tuple
 
@@ -23,8 +24,8 @@ class Arm4DOFPickPlaceEnv(gym.Env):
         self.stage = stage
         self.render_mode = render_mode
 
-        scene_path = config["scene_path"]
-        self.model = mujoco.MjModel.from_xml_path(scene_path)
+        scene_path = Path(__file__).resolve().parents[1] / "assets" / "scene.xml"
+        self.model = mujoco.MjModel.from_xml_path(str(scene_path))
         self.data = mujoco.MjData(self.model)
 
         self.joint_names = config.get("joint_names", ["joint1_yaw", "joint2_pitch", "joint3_pitch", "joint4_pitch"])
@@ -79,10 +80,10 @@ class Arm4DOFPickPlaceEnv(gym.Env):
         self.viewer = None
 
     def _set_object_position(self, pos):
-        qpos_adr = self.model.joint_qposadr[self.object_joint_id]
+        qpos_adr = self.model.jnt_qposadr[self.object_joint_id]
         self.data.qpos[qpos_adr : qpos_adr + 3] = pos
         self.data.qpos[qpos_adr + 3 : qpos_adr + 7] = np.array([1, 0, 0, 0], dtype=np.float32)
-        qvel_adr = self.model.joint_dofadr[self.object_joint_id]
+        qvel_adr = self.model.jnt_dofadr[self.object_joint_id]
         self.data.qvel[qvel_adr : qvel_adr + 6] = 0
 
     def _set_goal_position(self, pos):
@@ -100,7 +101,7 @@ class Arm4DOFPickPlaceEnv(gym.Env):
         if len(self.reset_joint_pos) != len(self.joint_ids):
             raise ValueError("reset_joint_pos must match number of controlled joints")
         for jid, qpos in zip(self.joint_ids, self.reset_joint_pos):
-            qpos_adr = self.model.joint_qposadr[jid]
+            qpos_adr = self.model.jnt_qposadr[jid]
             self.data.qpos[qpos_adr] = qpos
         obj_x, obj_y = self._sample_xy(self.np_random, self.object_spawn_range)
         obj_z = self.table_height + self.object_size
@@ -133,6 +134,7 @@ class Arm4DOFPickPlaceEnv(gym.Env):
         return obs, info
 
     def step(self, action: np.ndarray):
+        action = np.clip(action, -1.0, 1.0)
         action = np.asarray(action, dtype=np.float32)
         action = np.clip(action, -1.0, 1.0)
         joint_action = action[: self.arm_action_dim] * self.action_scale
@@ -144,7 +146,7 @@ class Arm4DOFPickPlaceEnv(gym.Env):
         for _ in range(self.sim_steps):
             mujoco.mj_step(self.model, self.data)
             for jid in self.joint_ids:
-                dof_adr = self.model.joint_dofadr[jid]
+                dof_adr = self.model.jnt_dofadr[jid]
                 self.data.qvel[dof_adr] = np.clip(self.data.qvel[dof_adr], -self.max_joint_vel, self.max_joint_vel)
 
             if self.is_grasped:
@@ -162,7 +164,7 @@ class Arm4DOFPickPlaceEnv(gym.Env):
             goal_pos=self.goal_pos,
         )
 
-        object_pos = np.array(self.data.body_xpos[self.object_body_id], dtype=np.float32)
+        object_pos = np.array(self.data.xpos[self.object_body_id], dtype=np.float32)
         object_height = float(object_pos[2])
 
         if self.stage in {"grasp", "place"}:

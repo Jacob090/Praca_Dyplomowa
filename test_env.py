@@ -22,12 +22,18 @@ def main():
     obs, info = env.reset(seed=123)
     print("Initial info:", info)
     for _ in range(args.steps):
-        action = env.action_space.sample().astype(np.float32)
+        #action = env.action_space.sample().astype(np.float32)
+        action = np.zeros(env.action_space.shape, dtype=np.float32)
         obs, reward, terminated, truncated, info = env.step(action)
         if args.render:
             env.render()
         if terminated or truncated:
             obs, info = env.reset()
+
+    if args.render:
+        print("Symulacja zatrzymana — naciśnij Enter aby zamknąć okno.")
+        input()
+
     env.close()
 
 

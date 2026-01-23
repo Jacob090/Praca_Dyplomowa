@@ -5,8 +5,8 @@ def get_joint_state(model, data, joint_ids):
     qpos_list = []
     qvel_list = []
     for jid in joint_ids:
-        qpos_adr = model.joint_qposadr[jid]
-        qvel_adr = model.joint_dofadr[jid]
+        qpos_adr = model.jnt_qposadr[jid]
+        qvel_adr = model.jnt_dofadr[jid]
         qpos_list.append(data.qpos[qpos_adr])
         qvel_list.append(data.qvel[qvel_adr])
     return np.array(qpos_list, dtype=np.float32), np.array(qvel_list, dtype=np.float32)
@@ -16,9 +16,10 @@ def get_tcp_position(data, tcp_site_id):
     return np.array(data.site_xpos[tcp_site_id], dtype=np.float32)
 
 
-def get_object_state(data, object_body_id):
-    pos = np.array(data.body_xpos[object_body_id], dtype=np.float32)
-    vel = np.array(data.body_xvelp[object_body_id], dtype=np.float32)
+def get_object_state(data, body_id):
+    pos = np.array(data.xpos[body_id], dtype=np.float32)
+    # data.cvel: [ang vel (3), lin vel (3)]
+    vel = np.array(data.cvel[body_id][3:6], dtype=np.float32)
     return pos, vel
 
 
