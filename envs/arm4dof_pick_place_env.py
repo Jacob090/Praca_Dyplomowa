@@ -7,6 +7,7 @@ import gymnasium as gym
 import mujoco
 import mujoco.viewer
 import numpy as np
+import threading
 
 
 from utils.metrics import compute_success, has_nan, is_out_of_bounds
@@ -255,16 +256,24 @@ class Arm4DOFPickPlaceEnv(gym.Env):
     def render(self):
         if self.render_mode is None:
             return None
+
         if self.render_mode == "rgb_array":
             if self.renderer is None:
                 self.renderer = mujoco.Renderer(self.model, height=480, width=640)
             self.renderer.update_scene(self.data, camera="main")
             return self.renderer.render()
+
         if self.render_mode == "human":
             if self.viewer is None:
-                self.viewer = mujoco.viewer.launch_passive(self.model, self.data)
-            self.viewer.sync()
+                # uruchom INTERAKTYWNY viewer (nie passive) w wątku
+                def _run_viewer():
+                    mujoco.viewer.launch(self.model, self.data)
+
+                t = threading.Thread(target=_run_viewer, daemon=True)
+                t.start()
+                self.viewer = True  # znacznik, żeby nie odpalać drugi raz
             return None
+
         return None
 
     def close(self):

@@ -315,7 +315,6 @@
   </equality>
 
   <actuator>
-  <!-- Serwa pozycyjne dla ramienia -->
   <position name="shoulder_pan"  joint="shoulder_pan_joint"
             kp="2000" kv="100"
             ctrllimited="true" ctrlrange="-3.14159 3.14159"
@@ -336,7 +335,6 @@
             ctrllimited="true" ctrlrange="-3.14159 3.14159"
             forcerange="-28 28"/>
 
-  <!-- Chwytak zostaje jak był -->
   <general class="2f85" name="fingers_actuator" tendon="split"
            ctrllimited="true" ctrlrange="0 255"
            forcerange="-5 5"
@@ -344,7 +342,6 @@
 </actuator>
 
   <keyframe>
-    <!-- 4 jointy ramienia (bez wrist2/3) + 6 jointów chwytaka = 10 -->
     <key name="home"
          qpos="-1.5708 -1.5708 1.5708 -1.5708  0 0 0 0 0 0"
          ctrl="-1.5708 -1.5708 1.5708 -1.5708  0"/>
