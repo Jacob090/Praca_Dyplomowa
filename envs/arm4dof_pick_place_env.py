@@ -8,6 +8,7 @@ import mujoco
 import mujoco.viewer
 import numpy as np
 
+
 from utils.metrics import compute_success, has_nan, is_out_of_bounds
 from utils.observations import compute_observation
 from utils.rewards import reward_stage1, reward_stage2, reward_stage3
@@ -28,7 +29,8 @@ class Arm4DOFPickPlaceEnv(gym.Env):
         self.model = mujoco.MjModel.from_xml_path(str(scene_path))
         self.data = mujoco.MjData(self.model)
 
-        self.joint_names = config.get("joint_names", ["joint1_yaw", "joint2_pitch", "joint3_pitch", "joint4_pitch"])
+        self.joint_names = config.get("joint_names",["shoulder_pan_joint", "shoulder_lift_joint", "elbow_joint"])
+
         self.joint_ids = [self._require_id(mujoco.mjtObj.mjOBJ_JOINT, name) for name in self.joint_names]
         self.arm_actuator_ids = self._resolve_arm_actuators(config.get("arm_actuator_names"))
 
@@ -78,7 +80,8 @@ class Arm4DOFPickPlaceEnv(gym.Env):
 
         self.renderer = None
         self.viewer = None
-
+        self._viewer_thread = None
+        self._viewer_ready = False
     def _set_object_position(self, pos):
         qpos_adr = self.model.jnt_qposadr[self.object_joint_id]
         self.data.qpos[qpos_adr : qpos_adr + 3] = pos

@@ -18,7 +18,7 @@ Kompletny, działający projekt do pracy dyplomowej: autonomiczne sterowanie 4�
 ## Instalacja
 
 ```
-python -m venv .venv
+py -m venv .venv
 .venv\Scripts\activate
 pip install -r requirements.txt
 ```
