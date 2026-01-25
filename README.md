@@ -4,15 +4,16 @@ Kompletny, działający projekt do pracy dyplomowej: autonomiczne sterowanie 4�
 
 ## Założenia i decyzje projektowe
 
-- **Manipulator 4 DOF**: 4 przeguby zawiasowe w osi Z (yaw) i osi Y (pitch). Chwytak to osobny suwak (nie liczony do DOF), sterowany jedną zmienną akcji.
+- **Model fizyczny oraz przegubowy wzorowany na publicznych modelach: Universal Robots UR5e (Ramie robotyczne 6DPF), Robotiq 2F-85 (Chytak). Makieta sceny w pełni autorska.
+- **Manipulator 4 DOF**: 4 przeguby zawiasowe w osi Z (yaw) i osi Y (pitch). Chwytak to osobny "staw" (nie liczony do DOF), sterowany jedną zmienną akcji.
 - **Brak orientacji TCP**: obserwacje i nagrody nie używają kwaternionów ani orientacji.
 - **Chwytanie**: uproszczone „soft‑grasp”. Gdy chwytak zamknięty i TCP blisko obiektu, obiekt jest „przyklejany” do TCP poprzez bezpośrednie ustawianie pozycji w `MjData` (stabilne, deterministyczne i wystarczające do celów RL bez komplikacji kontaktów).
 - **Curriculum learning**:
-  - Stage 1 (reach): tylko zbliżenie TCP do obiektu.
+  - Stage 1 (reach): tylko zbliżenie TCP do obiektu -> korekta.
   - Stage 2 (grasp): wczytanie wag z Stage 1 i bonusy za zamknięcie chwytaka i podniesienie.
   - Stage 3 (place): wczytanie wag z Stage 2 i nagrody za przeniesienie do strefy celu.
 - **Deterministyczne seedy**: `reset(seed)` używa `gymnasium.utils.seeding`.
-- **Stabilność**: akcje są clipowane, a prędkości stawów ograniczane.
+- **Stabilność**: akcje są clipowane, a prędkości stawów ograniczane ze względu na zaimplementowaną fizykę ramienia.
 
 
 ## Instalacja
@@ -68,7 +69,7 @@ python evaluation/evaluate_policy.py --model-path evals/stage3/best_model.zip --
 
 ## Opis obserwacji
 
-Wektor obserwacji (float32):
+Wektor obserwacji:
 
 1. Pozycje 4 przegubów (qpos)
 2. Prędkości 4 przegubów (qvel)
@@ -85,9 +86,9 @@ Wektor obserwacji (float32):
   - NaN w obserwacji
   - obiekt poza workspace
 - **truncated**:
-  - limit kroków
+  - limit kroków (prawie nie osiągalny)
 
-## Renderowanie
+## Renderowanie (viever jest tylko do podlądu fizycznego - nie działa podczas ustawiania seperów timeoutu)
 
 - `render_mode="human"`: interaktywny podgląd MuJoCo.
 - `render_mode="rgb_array"`: zwraca klatkę RGB.
@@ -101,14 +102,19 @@ Parametry środowiska i treningu są w `configs/`. Najważniejsze:
 
 ## Uwagi końcowe
 
-- Chwytak nie ma orientacji – TCP zawsze pionowo w dół.
+- Chwytak nie ma orientacji – TCP zawsze pionowo w dół (ostatnia oś do korekcji).
 - Brak quaternionów w obserwacjach i nagrodach.
 - Projekt zgodny z wymaganiami: MuJoCo 3.4.0, gymnasium 1.2.3, stable-baselines3 2.7.1.
 
 ## TODO
 
 - Dopracować tuning nagród i progów dla stabilniejszej zbieżności.
-- Przeprowadzić pełne treningi dla wszystkich etapów i zapisać wyniki (TensorBoard).
-- Przygotować zestaw eksperymentów porównawczych (hiperparametry, progi, randomizacja).
-- Rozważyć bardziej realistyczny chwyt (kontakty) zamiast soft‑grasp.
+- Przeprowadzić pełne treningi dla wszystkich etapów i zapisać wyniki (zapis automatyczny do bazy w trakcie pracy).
+- Przygotować zestaw eksperymentów porównawczych (hiperparametry, progi, randomizacja - 50% spełnione).
+- Rozważyć bardziej realistyczny chwyt (kontakty) zamiast soft‑grasp. (nie obowiązkowe ale moze coś poprawi w precyzji - do sprawdzenia)
 - Dodać dodatkowe metryki do ewaluacji (np. czas sukcesu, średnia odległość).
+- Zmienić miejsca do treningu: symulacja MuJoCo -> CPU, Uczenie sieci SAC -> GPU (render_mode=None)
+
+## Terminologia
+
+-TCP - punkt styczności, roboczy narzędzia robota
