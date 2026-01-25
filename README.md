@@ -4,7 +4,7 @@ Kompletny, działający projekt do pracy dyplomowej: autonomiczne sterowanie 4�
 
 ## Założenia i decyzje projektowe
 
-- **Model fizyczny oraz przegubowy wzorowany na publicznych modelach: Universal Robots UR5e (Ramie robotyczne 6DPF), Robotiq 2F-85 (Chytak). Makieta sceny w pełni autorska.
+- **Model fizyczny oraz przegubowy wzorowany na publicznych modelach:** Universal Robots UR5e (Ramie robotyczne 6DOF), Robotiq 2F-85 (Chytak). Makieta sceny w pełni autorska.
 - **Manipulator 4 DOF**: 4 przeguby zawiasowe w osi Z (yaw) i osi Y (pitch). Chwytak to osobny "staw" (nie liczony do DOF), sterowany jedną zmienną akcji.
 - **Brak orientacji TCP**: obserwacje i nagrody nie używają kwaternionów ani orientacji.
 - **Chwytanie**: uproszczone „soft‑grasp”. Gdy chwytak zamknięty i TCP blisko obiektu, obiekt jest „przyklejany” do TCP poprzez bezpośrednie ustawianie pozycji w `MjData` (stabilne, deterministyczne i wystarczające do celów RL bez komplikacji kontaktów).
@@ -50,9 +50,9 @@ python training/train_stage3_place.py
 ## Wznawianie treningu z checkpointów
 
 ```
-python training/train_stage1_reach.py --resume checkpoints/stage1/stage1_reach_100000_steps.zip
-python training/train_stage2_grasp.py --resume checkpoints/stage2/stage2_grasp_100000_steps.zip
-python training/train_stage3_place.py --resume checkpoints/stage3/stage3_place_100000_steps.zip
+python training/train_stage1_reach.py --resume checkpoints/stage1/stage1_reach_1000000_steps.zip
+python training/train_stage2_grasp.py --resume checkpoints/stage2/stage2_grasp_1000000_steps.zip
+python training/train_stage3_place.py --resume checkpoints/stage3/stage3_place_1000000_steps.zip
 ```
 
 ## TensorBoard
