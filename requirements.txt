@@ -6,3 +6,4 @@ numpy
 pyyaml
 tensorboard
 opencv-python
+stable-baselines3[extra]

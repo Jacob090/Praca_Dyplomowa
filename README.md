@@ -30,7 +30,7 @@ pip install -r requirements.txt
 python test_env.py --stage reach --steps 200 --render
 ```
 
-## Trening SAC z curriculum learning
+## Trening SAC z curriculum learning **!!!uruchamiać tylko raz do wygenerowania scieżek!!!**
 
 ### Stage 1 – Reach
 ```
@@ -42,7 +42,7 @@ python training/train_stage1_reach.py
 python training/train_stage2_grasp.py
 ```
 
-### Stage 3 – Place (ładuje wagi z Stage 2) (nie uruchamiać)
+### Stage 3 – Place (ładuje wagi z Stage 2)
 ```
 python training/train_stage3_place.py
 ```
@@ -50,9 +50,9 @@ python training/train_stage3_place.py
 ## Wznawianie treningu z checkpointów
 
 ```
-python training/train_stage1_reach.py --resume checkpoints/stage1/stage1_reach_1000000_steps.zip
-python training/train_stage2_grasp.py --resume checkpoints/stage2/stage2_grasp_1000000_steps.zip
-python training/train_stage3_place.py --resume checkpoints/stage3/stage3_place_1000000_steps.zip
+python training/train_stage1_reach.py --resume evals/stage1/best_model.zip
+python training/train_stage2_grasp.py --resume evals/stage1/best_model.zip
+python training/train_stage3_place.py --resume evals/stage1/best_model.zip
 ```
 
 ## TensorBoard
@@ -64,7 +64,7 @@ tensorboard --logdir runs
 ## Ewaluacja polityki
 
 ```
-python evaluation/evaluate_policy.py --model-path evals/stage3/best_model.zip --stage place --episodes 10 --render
+python evaluation/evaluate_policy.py --model-path evals/stage1/best_model.zip --stage place --episodes 10 --render
 ```
 
 ## Opis obserwacji
@@ -86,12 +86,13 @@ Wektor obserwacji:
   - NaN w obserwacji
   - obiekt poza workspace
 - **truncated**:
-  - limit kroków (prawie nie osiągalny)
+  - limit kroków
 
-## Renderowanie (viever jest tylko do podlądu fizycznego - nie działa podczas ustawiania seperów timeoutu)
+## Renderowanie (viewer jest tylko do podlądu fizycznego)
 
 - `render_mode="human"`: interaktywny podgląd MuJoCo.
 - `render_mode="rgb_array"`: zwraca klatkę RGB.
+
 
 ## Konfiguracja
 
