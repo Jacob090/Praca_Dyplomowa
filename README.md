@@ -32,7 +32,7 @@ python test_env.py --stage reach --steps 200 --render
 
 ## Trening SAC z curriculum learning
 
-### Stage 1 – Reach (do dopracowania przechodzenie wątków!!)
+### Stage 1 – Reach
 ```
 python training/train_stage1_reach.py
 ```
