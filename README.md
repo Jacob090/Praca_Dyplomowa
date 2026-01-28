@@ -51,8 +51,8 @@ python training/train_stage3_place.py
 
 ```
 python training/train_stage1_reach.py --resume evals/stage1/best_model.zip
-python training/train_stage2_grasp.py --resume evals/stage1/best_model.zip
-python training/train_stage3_place.py --resume evals/stage1/best_model.zip
+python training/train_stage2_grasp.py --resume evals/stage2/best_model.zip
+python training/train_stage3_place.py --resume evals/stage3/best_model.zip
 ```
 
 ## TensorBoard
