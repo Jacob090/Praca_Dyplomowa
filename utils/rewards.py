@@ -9,10 +9,13 @@ def _arm_action_penalty(action, action_penalty_scale):
     return action_penalty_scale * float(np.mean(np.square(arm_action)))
 
 
+def _apply_action_penalty(reward, action, action_penalty_scale):
+    return reward - _arm_action_penalty(action, action_penalty_scale)
+
+
 def reward_stage1(dist_tcp_obj, action, reach_threshold, action_penalty_scale, reach_bonus):
     reward = -dist_tcp_obj
-    reward -= action_penalty_scale * float(np.mean(np.square(action[:4])))
-    reward -= _arm_action_penalty(action, action_penalty_scale)
+    reward = _apply_action_penalty(reward, action, action_penalty_scale)
     if dist_tcp_obj < reach_threshold:
         reward += reach_bonus
     return float(reward)
@@ -31,8 +34,7 @@ def reward_stage2(
     lift_bonus,
 ):
     reward = -dist_tcp_obj
-    reward -= action_penalty_scale * float(np.mean(np.square(action[:4])))
-    reward -= _arm_action_penalty(action, action_penalty_scale)
+    reward = _apply_action_penalty(reward, action, action_penalty_scale)
     if dist_tcp_obj < reach_threshold and gripper_cmd > 0.7:
         reward += grasp_bonus
     if is_grasped and object_height > lift_height:
@@ -54,8 +56,7 @@ def reward_stage3(
 ):
     progress = prev_dist_obj_goal - dist_obj_goal
     reward = progress
-    reward -= action_penalty_scale * float(np.mean(np.square(action[:4])))
-    reward -= _arm_action_penalty(action, action_penalty_scale)
+    reward = _apply_action_penalty(reward, action, action_penalty_scale)
     if dist_obj_goal < success_threshold:
         reward += goal_bonus
     if (not is_grasped) and object_height < drop_height:

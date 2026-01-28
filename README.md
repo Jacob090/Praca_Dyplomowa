@@ -88,7 +88,7 @@ Wektor obserwacji:
 - **truncated**:
   - limit kroków
 
-## Renderowanie (viewer jest tylko do podlądu fizycznego)
+## Renderowanie (viewer jest tylko do podlądu fizycznego statycznego - nie generuje całej sekwencji klatek)
 
 - `render_mode="human"`: interaktywny podgląd MuJoCo.
 - `render_mode="rgb_array"`: zwraca klatkę RGB.
