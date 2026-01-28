@@ -103,7 +103,7 @@ Parametry środowiska i treningu są w `configs/`. Najważniejsze:
 
 ## Uwagi końcowe
 
-- Chwytak nie ma orientacji – TCP zawsze pionowo w dół (ostatnia oś do korekcji).
+- Chwytak nie ma orientacji ustawionej zawsze pionowej przez ograniczenia osi w symulatorze MuJoCo.
 - Brak quaternionów w obserwacjach i nagrodach.
 - Projekt zgodny z wymaganiami: MuJoCo 3.4.0, gymnasium 1.2.3, stable-baselines3 2.7.1.
 
